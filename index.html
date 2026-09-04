@@ -357,6 +357,31 @@ details.more>.body{padding-top:10px}
 /* motion v5 */
 .rise-item .shift-to,.rise-item .shift-arrow{opacity:0;transition:opacity .12s linear .85s}
 .rise-item.in .shift-to,.rise-item.in .shift-arrow{opacity:1}
+
+/* motion v6 */
+.proof-grid>.rise-item{opacity:1!important;transform:none!important;transition:none!important}
+.fig.pending{visibility:hidden}
+.arg{transform:none!important;transition:none}
+.arg .eyebrow,.arg h3{transform:none}
+.arg details.more,.arg>p{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.arg-grid>.arg:first-child details.more,.arg-grid>.arg:first-child>p{transform:translateX(110vw)}
+.arg-grid>.arg:last-child details.more,.arg-grid>.arg:last-child>p{transform:translateX(-110vw)}
+.arg.in details.more,.arg.in>p{transform:none}
+@media(prefers-reduced-motion:reduce){.arg details.more,.arg>p{transform:none!important}}
+
+/* motion v7 */
+.arg>p,.arg .eyebrow{transform:none!important}
+.arg-grid>.arg:first-child details.more{transform:translateX(110vw)}
+.arg-grid>.arg:last-child details.more{transform:translateX(-110vw)}
+.arg-grid>.arg.in:first-child details.more,.arg-grid>.arg.in:last-child details.more{transform:none!important}
+@media(prefers-reduced-motion:reduce){.arg details.more{transform:none!important}}
+
+/* motion v8: headline + More fly together; eyebrow stays */
+.arg h3{transform:none;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.arg-grid>.arg:first-child h3{transform:translateX(110vw)!important}
+.arg-grid>.arg:last-child h3{transform:translateX(-110vw)!important}
+.arg-grid>.arg.in:first-child h3,.arg-grid>.arg.in:last-child h3{transform:none!important}
+@media(prefers-reduced-motion:reduce){.arg h3{transform:none!important}}
 </style>
 </head>
 <body id="top">
@@ -848,10 +873,10 @@ details.more>.body{padding-top:10px}
   grids.forEach(function(g){Array.prototype.forEach.call(g.children,function(c,i){c.classList.add('rise-item');c.style.transitionDelay=(i*80)+'ms';});});
   // count-up figures
   function countUp(el){
-    var txt=el.textContent.trim(); var m=txt.match(/^(\d+)(.*)$/); if(!m) return;
-    var target=parseInt(m[1],10), suffix=m[2], start=null, dur=900;
+    var txt=(el.getAttribute('data-final')||el.textContent).trim(); var m=txt.match(/^(\d+)(.*)$/); if(!m) return;
+    var target=parseInt(m[1],10), suffix=m[2], start=null, dur=900; el.classList.remove('pending');
     if(reduce||target<3){return;}
-    el.textContent='0'+suffix;
+    el.classList.remove('pending'); el.textContent='0'+suffix;
     function step(t){ if(!start) start=t; var p=Math.min(1,(t-start)/dur); var e=1-Math.pow(1-p,3);
       el.textContent=Math.round(target*e)+suffix; if(p<1) requestAnimationFrame(step); else el.textContent=txt; }
     requestAnimationFrame(step);
@@ -859,7 +884,7 @@ details.more>.body{padding-top:10px}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);
       if(!e.target.closest('.proof-grid')) e.target.querySelectorAll('.fig').forEach(countUp); } });},{threshold:.2});
-    var figio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){figio.unobserve(e.target);e.target.querySelectorAll('.fig').forEach(countUp);}});},{rootMargin:'0px 0px -40% 0px',threshold:0.5});
+    var figio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){figio.unobserve(e.target);e.target.querySelectorAll('.fig').forEach(countUp);}});},{rootMargin:'0px 0px -15% 0px',threshold:0.5});
     document.querySelectorAll('.proof-grid>.rise-item').forEach(function(e){figio.observe(e);});
     document.querySelectorAll('.rise-item').forEach(function(e){if(!e.closest('.shift-grid')) io.observe(e);});
   } else { document.querySelectorAll('.rise-item').forEach(function(e){e.classList.add('in');}); }
@@ -871,13 +896,13 @@ details.more>.body{padding-top:10px}
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // type-in for short/non-numeric figures
   function typeIn(el){
-    if(reduce) return; var txt=el.textContent.trim(); var m=txt.match(/^(\d+)/);
+    if(reduce) return; var txt=(el.getAttribute('data-final')||el.textContent).trim(); var m=txt.match(/^(\d+)/); el.classList.remove('pending');
     if(m&&parseInt(m[1],10)>=3) return; // numeric ones count up elsewhere
     el.textContent=''; el.style.minHeight='1em'; var i=0;
     (function tick(){ i++; el.textContent=txt.slice(0,i); if(i<txt.length) setTimeout(tick,90); })();
   }
   if('IntersectionObserver' in window){
-    var figs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){typeIn(e.target);figs.unobserve(e.target);}});},{rootMargin:'0px 0px -40% 0px',threshold:0.5});
+    var figs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){typeIn(e.target);figs.unobserve(e.target);}});},{rootMargin:'0px 0px -15% 0px',threshold:0.5});
     document.querySelectorAll('.fig').forEach(function(f){var m=f.textContent.trim().match(/^(\d+)/); if(!m||parseInt(m[1],10)<3) figs.observe(f);});
   } else { document.querySelectorAll('.arg,.cap,.fw').forEach(function(e){e.classList.add('in');}); }
 })();
@@ -899,22 +924,37 @@ details.more>.body{padding-top:10px}
     els.forEach(function(e){ e.classList.remove('in'); io.observe(e); });
   }
   // shifts: card 40% up the screen, then strike; min gap between cards
-  sequencer('.shift-grid>.rise-item',{rootMargin:'0px 0px -48% 0px',threshold:0.6,gap:260});
+  sequencer('.shift-grid>.rise-item',{rootMargin:'0px 0px -20% 0px',threshold:0.5,gap:260});
   // capabilities / framework rows: whole row past the halfway line
-  sequencer('.cap',{rootMargin:'0px 0px -50% 0px',threshold:1,gap:220});
-  sequencer('.fw',{rootMargin:'0px 0px -50% 0px',threshold:1,gap:220});
+  sequencer('.cap',{rootMargin:'0px 0px -15% 0px',threshold:1,gap:220});
+  sequencer('.fw',{rootMargin:'0px 0px -15% 0px',threshold:1,gap:220});
 })();
 </script>
 
 <script>
 (function(){
   if(!('IntersectionObserver' in window)) return;
-  // argument: observe the untransformed grid, not the off-screen children
+})();
+</script>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // figures start in their pre-animation state so the first thing seen is the animation
+  if(!reduce){
+    document.querySelectorAll('.fig').forEach(function(f){
+      var txt=f.textContent.trim(), m=txt.match(/^(\d+)(.*)$/);
+      f.setAttribute('data-final',txt);
+      f.classList.add('pending');
+    });
+  }
+  if(!('IntersectionObserver' in window)) return;
+  // structure/gap waits for its own scroll position
   var grid=document.querySelector('.arg-grid'); var args=grid?grid.querySelectorAll('.arg'):[];
   if(args.length===2){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return; io.disconnect();
-      args[0].classList.add('in'); setTimeout(function(){args[1].classList.add('in');},550); });},{rootMargin:'0px 0px -20% 0px',threshold:0});
-    io.observe(grid);
+    var io1=new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return; io1.disconnect(); args[0].classList.add('in'); });},{rootMargin:'0px 0px -20% 0px',threshold:0});
+    var io2=new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return; io2.disconnect(); args[0].classList.add('in'); args[1].classList.add('in'); });},{rootMargin:'0px 0px -50% 0px',threshold:0});
+    io1.observe(grid); io2.observe(grid);
   }
 })();
 </script>
