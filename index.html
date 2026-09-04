@@ -382,6 +382,18 @@ details.more>.body{padding-top:10px}
 .arg-grid>.arg:last-child h3{transform:translateX(-110vw)!important}
 .arg-grid>.arg.in:first-child h3,.arg-grid>.arg.in:last-child h3{transform:none!important}
 @media(prefers-reduced-motion:reduce){.arg h3{transform:none!important}}
+
+/* phone: transformation cards as plus-rows */
+@media(max-width:600px){
+  .shift.flipcard{position:relative;cursor:pointer}
+  .shift.flipcard .m-fold{position:static;margin-top:0}
+  .shift.flipcard .m-fold>summary{position:absolute;top:16px;right:16px;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0}
+  .shift.flipcard .m-fold>summary::before{content:"+";font-size:24px;line-height:1;font-weight:500;color:var(--gold);transition:transform .2s}
+  .shift.flipcard .m-fold[open]>summary::before{content:"+";transform:rotate(45deg)}
+  .shift.flipcard .m-fold>summary .lbl-closed,.shift.flipcard .m-fold>summary .lbl-open{display:none}
+  .shift.flipcard .m-fold>.body{padding-top:12px}
+  .shift.flipcard .face-f{padding-right:52px}
+}
 </style>
 </head>
 <body id="top">
@@ -956,6 +968,19 @@ details.more>.body{padding-top:10px}
     var io2=new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return; io2.disconnect(); args[0].classList.add('in'); args[1].classList.add('in'); });},{rootMargin:'0px 0px -50% 0px',threshold:0});
     io1.observe(grid); io2.observe(grid);
   }
+})();
+</script>
+
+<script>
+(function(){
+  // phone: tapping anywhere on a transformation card opens its fold
+  document.querySelectorAll('.shift.flipcard').forEach(function(card){
+    card.addEventListener('click',function(ev){
+      if(window.innerWidth>600) return;
+      if(ev.target.closest('summary')) return; // native toggle handles this
+      var d=card.querySelector('details.m-fold'); if(d) d.open=!d.open;
+    });
+  });
 })();
 </script>
 </body>
