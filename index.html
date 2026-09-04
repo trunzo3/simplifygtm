@@ -136,7 +136,7 @@ header{border-bottom:1px solid var(--paper-2);background:var(--white);position:s
 .shift-to{font-family:var(--serif);font-size:23px;color:#9E731F;font-style:italic}
 .face-b p{font-family:var(--serif);font-size:18px;line-height:1.4;color:var(--white);margin:0}
 .shift .cue{color:var(--gold)}
-.shift .who{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-top:16px;display:block}
+.shift .who{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);margin-top:16px;display:block}
 .face-b .who{color:var(--gold-lt)}
 @media(max-width:820px){.shift-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.flip{transition:none}}
@@ -170,7 +170,7 @@ footer .mark .sub{color:#6D7896}
 .logos{padding:36px 0 40px;border-bottom:1px solid var(--paper-2);background:var(--white)}
 .logos .eyebrow{text-align:center;margin-bottom:22px}
 .marquee{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marquee .track{display:flex;align-items:center;gap:56px;width:max-content;animation:scroll 30s linear infinite}
+.marquee .track{display:flex;align-items:center;gap:56px;width:max-content;animation:scroll 32s linear infinite}
 .marquee:hover .track{animation-play-state:paused}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.marquee .track{animation:none;flex-wrap:wrap;width:auto;justify-content:center;gap:22px 40px}.marquee .track img:nth-child(n+19){display:none}}
@@ -276,6 +276,87 @@ details.more>.body{padding-top:10px}
   .method-head h2,.shifts h2,.proof h2,.words h2,.engage h2{margin-bottom:22px}
   .container-label{margin-top:30px}
 }
+
+.pf.flipcard{padding:0;min-height:280px}
+.pf .flip{min-height:280px}
+.pf .face-f{background:var(--ink)}
+.pf .face-b{background:var(--white);color:var(--ink)}
+.pf .face-b p{font-family:var(--serif);font-size:16.5px;line-height:1.4;color:var(--ink);margin:0}
+.pf .face-b .who{color:var(--gold)}
+.pf .cue{color:var(--gold-lt)}
+.pf .fig{margin-bottom:6px}
+.proof-grid{gap:18px;background:transparent}
+
+/* flip on desktop, fold on phone */
+.flipcard .m-fold{display:none}
+@media(max-width:600px){
+  .flipcard{perspective:none;min-height:0;cursor:default}
+  .flipcard .flip{min-height:0;transform:none!important;transform-style:flat}
+  .flipcard .face-f{position:static;padding:22px 20px 20px;display:block}
+  .flipcard .face-b{display:none}
+  .flipcard .cue{display:none}
+  .flipcard .m-fold{display:block;margin-top:10px}
+  .flipcard .m-fold .body p{font-family:var(--serif);font-size:17px;line-height:1.4;margin:0 0 8px}
+}
+/* mid widths: two columns */
+@media(min-width:601px) and (max-width:1000px){.shift-grid,.proof-grid{grid-template-columns:repeat(2,1fr)}}
+/* capability rows */
+.cap-grid{display:block}
+.cap{padding:18px 0;border-bottom:1px solid var(--paper-2)}
+.cap:last-child{border-bottom:0}
+.cap h4{display:flex;align-items:baseline;gap:14px;margin:0}
+.cap h4 .num{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--gold);margin:0;display:inline}
+.cap details.more{margin-top:8px}
+
+/* motion: stagger, count, strike */
+.shift-grid>.rise-item,.proof-grid>.rise-item,.tgrid>.rise-item,.egrid>.rise-item,.door-grid>.rise-item{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.shift-grid>.rise-item.in,.proof-grid>.rise-item.in,.tgrid>.rise-item.in,.egrid>.rise-item.in,.door-grid>.rise-item.in{opacity:1;transform:none}
+.shift-from{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-size:0% 1px;background-position:0 58%;transition:background-size .6s ease .25s}
+
+.shift-to{opacity:0;transition:opacity .5s ease .75s}
+
+@media(prefers-reduced-motion:reduce){
+  .shift-grid>.rise-item,.proof-grid>.rise-item,.tgrid>.rise-item,.egrid>.rise-item,.door-grid>.rise-item{opacity:1;transform:none;transition:none}
+  .shift-from{text-decoration:line-through;background:none}.shift-to{opacity:1;transition:none}
+}
+
+/* motion v2 */
+.shift-grid>.rise-item{opacity:1;transform:none;transition:none}
+.shift-from{background-position:0 50%;background-size:0% 1.5px;transition:background-size .7s ease .35s}
+
+.shift-to{transition:opacity .5s ease .95s}
+.arg{opacity:0;transition:opacity .6s ease,transform .6s ease}
+.arg-grid>.arg:first-child{transform:translateX(-40px)}
+.arg-grid>.arg:last-child{transform:translateX(40px)}
+.arg.in{opacity:1;transform:none}
+.cap{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.cap.in{opacity:1;transform:none}
+.fw{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.fw.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.arg,.cap,.fw{opacity:1;transform:none;transition:none}}
+
+/* motion v3 */
+.arg{transition:opacity .8s ease,transform .8s ease}
+.arg-grid>.arg:first-child{transform:translateX(48px)}
+.arg-grid>.arg:last-child{transform:translateX(-48px)}
+@media(max-width:600px){.arg-grid>.arg:first-child{transform:translateX(24px)}.arg-grid>.arg:last-child{transform:translateX(-24px)}}
+.argument{overflow:hidden}
+.shift-grid>.rise-item .shift-from{transition-delay:.15s}
+
+/* motion v4 */
+.rise-item .shift-from{background-size:0% 1.5px}
+.rise-item.in .shift-from{background-size:100% 1.5px}
+.rise-item .shift-to{opacity:0}
+.rise-item.in .shift-to{opacity:1}
+.arg{opacity:1!important;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.arg-grid>.arg:first-child{transform:translateX(110vw)}
+.arg-grid>.arg:last-child{transform:translateX(-110vw)}
+.arg.in{transform:none!important}
+@media(prefers-reduced-motion:reduce){.arg{transform:none!important}}
+
+/* motion v5 */
+.rise-item .shift-to,.rise-item .shift-arrow{opacity:0;transition:opacity .12s linear .85s}
+.rise-item.in .shift-to,.rise-item.in .shift-arrow{opacity:1}
 </style>
 </head>
 <body id="top">
@@ -333,23 +414,47 @@ details.more>.body{padding-top:10px}
     <p class="eyebrow">Proven in high-stakes environments</p>
     <h2>Not theory. Systems tested under real pressure.</h2>
     <div class="proof-grid three">
-      <div class="pf">
-        <div class="fig">10</div>
-        <h4>of the Fortune 100</h4>
-        <details class="more" id="fortune-100"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Startups and global giants, across continents. Enablement systems that had to hold at scale — repeatable, not one-off.</p></div></details>
-        <span class="who">Enterprise &amp; high-growth</span>
+      <div class="pf flipcard" id="fortune-100" tabindex="0">
+        <span class="cue" aria-hidden="true">⟳</span>
+        <div class="flip">
+          <div class="face-f">
+            <div><div class="fig">10</div><h4>of the Fortune 100</h4></div>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Startups and global giants, across continents. Enablement systems that had to hold at scale — repeatable, not one-off.</p></div></details>
+            <span class="who">Enterprise &amp; high-growth</span>
+          </div>
+          <div class="face-b">
+            <p>Startups and global giants, across continents. Enablement systems that had to hold at scale — repeatable, not one-off.</p>
+            <span class="who">Enterprise &amp; high-growth</span>
+          </div>
+        </div>
       </div>
-      <div class="pf">
-        <div class="fig">100s</div>
-        <h4>of organizations facilitated</h4>
-        <details class="more" id="organizations"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Message development, leadership alignment, executive workshops. The ability to walk into a complex organization, diagnose what's stuck, and run the conversations that move it.</p></div></details>
-        <span class="who">Strategic facilitation</span>
+      <div class="pf flipcard" id="organizations" tabindex="0">
+        <span class="cue" aria-hidden="true">⟳</span>
+        <div class="flip">
+          <div class="face-f">
+            <div><div class="fig">100s</div><h4>of organizations facilitated</h4></div>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Message development, leadership alignment, executive workshops. Walk in, diagnose what's stuck, run the conversations that move it.</p></div></details>
+            <span class="who">Strategic facilitation</span>
+          </div>
+          <div class="face-b">
+            <p>Message development, leadership alignment, executive workshops. Walk in, diagnose what's stuck, run the conversations that move it.</p>
+            <span class="who">Strategic facilitation</span>
+          </div>
+        </div>
       </div>
-      <div class="pf">
-        <div class="fig">15+</div>
-        <h4>years carrying the bag</h4>
-        <details class="more" id="fifteen-years"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Led the teams, built the decks. The full spectrum — C-suite presentation to individual rep coaching.</p></div></details>
-        <span class="who">Operator, not observer</span>
+      <div class="pf flipcard" id="fifteen-years" tabindex="0">
+        <span class="cue" aria-hidden="true">⟳</span>
+        <div class="flip">
+          <div class="face-f">
+            <div><div class="fig">15+</div><h4>years carrying the bag</h4></div>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Led the teams, built the decks. The full spectrum — C-suite presentation to individual rep coaching.</p></div></details>
+            <span class="who">Operator, not observer</span>
+          </div>
+          <div class="face-b">
+            <p>Led the teams, built the decks. The full spectrum — C-suite presentation to individual rep coaching.</p>
+            <span class="who">Operator, not observer</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -430,11 +535,12 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Debated</span><span class="shift-arrow">→</span><span class="shift-to">Decided</span></div>
-            <span class="who">Think to Decide™</span>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Planning stops being periodic chaos and becomes a system your team runs without you.</p></div></details>
+            <span class="who">Decision structure</span>
           </div>
           <div class="face-b">
             <p>Planning stops being periodic chaos and becomes a system your team runs without you.</p>
-            <span class="who">Think to Decide™</span>
+            <span class="who">Decision structure</span>
           </div>
         </div>
       </div>
@@ -442,11 +548,12 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Demonstrated</span><span class="shift-arrow">→</span><span class="shift-to">Differentiated</span></div>
-            <span class="who">Message to Mobilize™</span>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Reps stop pitching features and start making change feel inevitable.</p></div></details>
+            <span class="who">Message architecture</span>
           </div>
           <div class="face-b">
             <p>Reps stop pitching features and start making change feel inevitable.</p>
-            <span class="who">Message to Mobilize™</span>
+            <span class="who">Message architecture</span>
           </div>
         </div>
       </div>
@@ -454,11 +561,12 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Presented</span><span class="shift-arrow">→</span><span class="shift-to">Acted on</span></div>
-            <span class="who">Present to Move™</span>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>The room leaves knowing what to do next — not just impressed.</p></div></details>
+            <span class="who">Executive briefings</span>
           </div>
           <div class="face-b">
             <p>The room leaves knowing what to do next — not just impressed.</p>
-            <span class="who">Present to Move™</span>
+            <span class="who">Executive briefings</span>
           </div>
         </div>
       </div>
@@ -466,11 +574,12 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Rescuing</span><span class="shift-arrow">→</span><span class="shift-to">Developing</span></div>
-            <span class="who">Lead to Adapt™</span>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Managers stop closing deals themselves and start scaling the people who do.</p></div></details>
+            <span class="who">Manager development</span>
           </div>
           <div class="face-b">
             <p>Managers stop closing deals themselves and start scaling the people who do.</p>
-            <span class="who">Lead to Adapt™</span>
+            <span class="who">Manager development</span>
           </div>
         </div>
       </div>
@@ -478,11 +587,12 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Automated</span><span class="shift-arrow">→</span><span class="shift-to">Compounding</span></div>
-            <span class="who">HITL AI Workflows</span>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>AI amplifies the team's best work instead of averaging it.</p></div></details>
+            <span class="who">Human-in-the-loop AI</span>
           </div>
           <div class="face-b">
             <p>AI amplifies the team's best work instead of averaging it.</p>
-            <span class="who">HITL AI Workflows</span>
+            <span class="who">Human-in-the-loop AI</span>
           </div>
         </div>
       </div>
@@ -490,6 +600,7 @@ details.more>.body{padding-top:10px}
         <div class="flip">
           <div class="face-f">
             <div class="shift-pair"><span class="shift-from">Sounds like everyone</span><span class="shift-arrow">→</span><span class="shift-to">Remembered</span></div>
+            <details class="more m-fold"><summary><span class="lbl-closed">More</span><span class="lbl-open">Less</span></summary><div class="body"><p>Buyers recall you when it's time to decide.</p></div></details>
             <span class="who">The whole system</span>
           </div>
           <div class="face-b">
@@ -726,6 +837,85 @@ details.more>.body{padding-top:10px}
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
     els.forEach(function(e){io.observe(e);});
   } else { els.forEach(function(e){e.classList.add('in');}); }
+})();
+</script>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // stagger grid children
+  var grids=document.querySelectorAll('.shift-grid,.proof-grid,.tgrid,.egrid,.door-grid');
+  grids.forEach(function(g){Array.prototype.forEach.call(g.children,function(c,i){c.classList.add('rise-item');c.style.transitionDelay=(i*80)+'ms';});});
+  // count-up figures
+  function countUp(el){
+    var txt=el.textContent.trim(); var m=txt.match(/^(\d+)(.*)$/); if(!m) return;
+    var target=parseInt(m[1],10), suffix=m[2], start=null, dur=900;
+    if(reduce||target<3){return;}
+    el.textContent='0'+suffix;
+    function step(t){ if(!start) start=t; var p=Math.min(1,(t-start)/dur); var e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*e)+suffix; if(p<1) requestAnimationFrame(step); else el.textContent=txt; }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);
+      if(!e.target.closest('.proof-grid')) e.target.querySelectorAll('.fig').forEach(countUp); } });},{threshold:.2});
+    var figio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){figio.unobserve(e.target);e.target.querySelectorAll('.fig').forEach(countUp);}});},{rootMargin:'0px 0px -40% 0px',threshold:0.5});
+    document.querySelectorAll('.proof-grid>.rise-item').forEach(function(e){figio.observe(e);});
+    document.querySelectorAll('.rise-item').forEach(function(e){if(!e.closest('.shift-grid')) io.observe(e);});
+  } else { document.querySelectorAll('.rise-item').forEach(function(e){e.classList.add('in');}); }
+})();
+</script>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // type-in for short/non-numeric figures
+  function typeIn(el){
+    if(reduce) return; var txt=el.textContent.trim(); var m=txt.match(/^(\d+)/);
+    if(m&&parseInt(m[1],10)>=3) return; // numeric ones count up elsewhere
+    el.textContent=''; el.style.minHeight='1em'; var i=0;
+    (function tick(){ i++; el.textContent=txt.slice(0,i); if(i<txt.length) setTimeout(tick,90); })();
+  }
+  if('IntersectionObserver' in window){
+    var figs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){typeIn(e.target);figs.unobserve(e.target);}});},{rootMargin:'0px 0px -40% 0px',threshold:0.5});
+    document.querySelectorAll('.fig').forEach(function(f){var m=f.textContent.trim().match(/^(\d+)/); if(!m||parseInt(m[1],10)<3) figs.observe(f);});
+  } else { document.querySelectorAll('.arg,.cap,.fw').forEach(function(e){e.classList.add('in');}); }
+})();
+</script>
+
+<script>
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  // Sequencer: elements reveal in order with a minimum gap, no matter how they cross the line.
+  function sequencer(selector,opts){
+    var els=Array.prototype.slice.call(document.querySelectorAll(selector)); if(!els.length) return;
+    var last=0, gap=opts.gap||220;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(!e.isIntersecting) return; io.unobserve(e.target);
+        var now=Date.now(), at=Math.max(now,last+gap); last=at;
+        setTimeout(function(){e.target.classList.add('in');}, at-now);
+      });
+    },{rootMargin:opts.rootMargin,threshold:opts.threshold});
+    els.forEach(function(e){ e.classList.remove('in'); io.observe(e); });
+  }
+  // shifts: card 40% up the screen, then strike; min gap between cards
+  sequencer('.shift-grid>.rise-item',{rootMargin:'0px 0px -48% 0px',threshold:0.6,gap:260});
+  // capabilities / framework rows: whole row past the halfway line
+  sequencer('.cap',{rootMargin:'0px 0px -50% 0px',threshold:1,gap:220});
+  sequencer('.fw',{rootMargin:'0px 0px -50% 0px',threshold:1,gap:220});
+})();
+</script>
+
+<script>
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  // argument: observe the untransformed grid, not the off-screen children
+  var grid=document.querySelector('.arg-grid'); var args=grid?grid.querySelectorAll('.arg'):[];
+  if(args.length===2){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return; io.disconnect();
+      args[0].classList.add('in'); setTimeout(function(){args[1].classList.add('in');},550); });},{rootMargin:'0px 0px -20% 0px',threshold:0});
+    io.observe(grid);
+  }
 })();
 </script>
 </body>
